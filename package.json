@@ -1,0 +1,33 @@
+{
+  "name": "mmm-literaryclock",
+  "version": "1.0.0",
+  "description": "A literary clock for MagicMirror² — every minute it shows a passage from a book that mentions the current time, with the time phrase emphasised.",
+  "main": "MMM-LiteraryClock.js",
+  "scripts": {
+    "test": "node --test"
+  },
+  "keywords": [
+    "magicmirror",
+    "magicmirror-module",
+    "MMM",
+    "clock",
+    "literature",
+    "literary-clock",
+    "quotes",
+    "books"
+  ],
+  "author": "Brian Wente",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bwente/MMM-LiteraryClock.git"
+  },
+  "bugs": {
+    "url": "https://github.com/bwente/MMM-LiteraryClock/issues"
+  },
+  "homepage": "https://github.com/bwente/MMM-LiteraryClock#readme",
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {}
+}

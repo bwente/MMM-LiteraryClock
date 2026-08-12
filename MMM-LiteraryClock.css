@@ -1,0 +1,93 @@
+/* MMM-LiteraryClock — book-page styling.
+ * Lora is bundled locally (fonts/) so the mirror never depends on Google
+ * Fonts at runtime. Everything is scoped to .MMM-LiteraryClock so it does
+ * not touch the rest of your mirror, and it overrides MagicMirror's
+ * default Roboto so the clock actually reads like a page of a book. */
+
+@font-face {
+  font-family: "LitclockLora";
+  src: url("fonts/lora-400.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "LitclockLora";
+  src: url("fonts/lora-700.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "LitclockLora";
+  src: url("fonts/lora-400-italic.woff2") format("woff2");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* Force our serif over MagicMirror's default module font. */
+.MMM-LiteraryClock,
+.MMM-LiteraryClock * {
+  font-family: "LitclockLora", Georgia, "Times New Roman", serif;
+}
+
+.MMM-LiteraryClock .litclock-wrap {
+  /* font-size + max-width are set inline from config; keep the measure
+     tight so lines break like a paragraph, not a banner. */
+  margin: 0;
+}
+
+.MMM-LiteraryClock .litclock-quote {
+  font-size: 1em;
+  font-weight: 400;
+  line-height: 1.58;
+  letter-spacing: 0.005em;
+  color: var(--litclock-quote-color, #736e62); /* dim body — lets the time phrase pop */
+  text-align: left;
+  text-wrap: pretty;          /* Chromium: avoids ugly short last lines */
+  hyphens: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* The time phrase — brighter and heavier so the eye lands on it. */
+.MMM-LiteraryClock .litclock-time {
+  font-weight: 700;
+  color: var(--litclock-time-color, #fbf9f4);
+  text-shadow: 0 0 1px rgba(255, 255, 255, 0.3);
+}
+
+/* Attribution set like a title page: italic title, roman author, dimmed. */
+.MMM-LiteraryClock .litclock-attr {
+  margin-top: 0.85em;
+  font-size: 0.6em;
+  font-weight: 400;
+  font-style: normal;
+  color: var(--litclock-attr-color, #8f8b82);
+  letter-spacing: 0.03em;
+}
+.MMM-LiteraryClock .litclock-attr .litclock-title {
+  font-style: italic;
+}
+.MMM-LiteraryClock .litclock-attr .litclock-author {
+  font-style: normal;
+}
+
+/* Digital fallback for the rare uncovered minute. */
+.MMM-LiteraryClock .litclock-fallback {
+  font-size: 1.9em;
+  font-weight: 700;
+  color: var(--litclock-time-color, #fbf9f4);
+  letter-spacing: 0.02em;
+}
+
+.MMM-LiteraryClock .litclock-loading .litclock-quote {
+  color: #55534e;
+}
+
+/* Dataset load error (misconfigured dataFile, etc.). */
+.MMM-LiteraryClock .litclock-error .litclock-quote {
+  font-size: 0.6em;
+  color: #b06a6a;
+}
