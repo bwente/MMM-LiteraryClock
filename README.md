@@ -62,7 +62,7 @@ All options are optional; defaults are shown.
 
 ## Deeper styling
 
-The two or three knobs above cover most needs. For anything more, every rule is
+The configuration options above cover most needs. For anything more, every rule is
 scoped to `.MMM-LiteraryClock`, so you can override it from your mirror's
 `css/custom.css` without touching this module:
 
