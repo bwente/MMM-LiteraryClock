@@ -25,7 +25,11 @@ cd ~/MagicMirror/modules
 git clone https://github.com/bwente/MMM-LiteraryClock.git
 ```
 
-No `npm install` step is required. Then add the module to `config/config.js`:
+No `npm install` step is required.
+
+## Configuration
+
+Add the module to `config/config.js`:
 
 ```js
 {
@@ -36,12 +40,22 @@ No `npm install` step is required. Then add the module to `config/config.js`:
     quoteColor: "#736e62",
     timeColor: "#fbf9f4"
   }
-}
+},
 ```
 
 Restart the mirror (e.g. `pm2 restart MagicMirror`).
 
-## Configuration
+## Update
+
+Pull the latest version from the module directory, then restart MagicMirror:
+
+```bash
+cd ~/MagicMirror/modules/MMM-LiteraryClock
+git pull
+pm2 restart MagicMirror
+```
+
+## Configuration options
 
 All options are optional; defaults are shown.
 
@@ -92,7 +106,7 @@ against the module folder:
 config: { dataFile: "datasets/litclock_de.csv" }
 ```
 
-The [literature-clock project](https://github.com/JohannesNE/literature-clock)
+The [literature-clock project](https://github.com/JohsEnevoldsen/literature-clock)
 and its forks maintain datasets in several languages.
 
 ## Coverage & fallback
@@ -112,9 +126,10 @@ dataset parsing, full-day coverage, and time-phrase highlighting.
 
 ## Credits & licence
 
-- **Module code** — MIT (see [LICENSE](LICENSE)).
+- **Module code** — MIT (see [LICENSE](LICENSE)). Third-party licensing and
+  attribution details are recorded in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
 - **Quote data** (`litclock_annotated.csv`) — compiled by the
-  [literature-clock](https://github.com/JohannesNE/literature-clock) project,
+  [literature-clock](https://github.com/JohsEnevoldsen/literature-clock) project,
   originally **crowd-sourced by The Guardian** and inspired by **Jaap Meijers'**
   [e-reader clock](https://www.instructables.com/id/Literary-Clock-Made-From-E-reader/).
   The quotations are short excerpts from their respective copyrighted works,

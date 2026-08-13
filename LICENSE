@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2026 MMM-LiteraryClock contributors
+Copyright (c) 2026 Brian Wente
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,20 +19,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
----
-
-This MIT license applies to the MODULE CODE only.
-
-Bundled third-party assets carry their own terms:
-
-  * fonts/lora-*.woff2 — the Lora typeface, (c) The Lora Project Authors,
-    licensed under the SIL Open Font License v1.1. Full text in fonts/OFL.txt.
-
-  * litclock_annotated.csv — literary quotations compiled by the
-    "literature-clock" project (github.com/JohannesNE/literature-clock),
-    originally crowd-sourced by The Guardian and inspired by Jaap Meijers'
-    e-reader clock. The quotations are short excerpts from their respective
-    copyrighted works, included here for the literary-clock purpose. They are
-    NOT covered by the MIT license above and remain the property of their
-    respective rights holders. See README.md for full attribution.

@@ -4,7 +4,7 @@
  * A literary clock — every minute it shows a passage from a book that
  * mentions the current time, with the time phrase emphasised.
  *
- * Data: JohannesNE/literature-clock, crowd-sourced by The Guardian,
+ * Data: JohsEnevoldsen/literature-clock, crowd-sourced by The Guardian,
  * original idea by Jaap Meijers. Bundled as litclock_annotated.csv.
  */
 Module.register("MMM-LiteraryClock", {

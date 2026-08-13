@@ -4,6 +4,7 @@
   "description": "A literary clock for MagicMirror² — every minute it shows a passage from a book that mentions the current time, with the time phrase emphasised.",
   "main": "MMM-LiteraryClock.js",
   "scripts": {
+    "lint": "eslint",
     "test": "node --test"
   },
   "keywords": [
@@ -29,5 +30,8 @@
   "engines": {
     "node": ">=18"
   },
-  "dependencies": {}
+  "dependencies": {},
+  "devDependencies": {
+    "eslint": "^9.39.4"
+  }
 }
