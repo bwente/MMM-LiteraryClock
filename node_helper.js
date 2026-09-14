@@ -7,20 +7,46 @@
  * languages) via the `dataFile` config option; each file is parsed once
  * and cached.
  *
- * Dataset format (pipe-delimited, UTF-8):
- *   time | timePhrase | quote | title | author | sfw
+ * Dataset formats (pipe-delimited, UTF-8):
+ *   Time | Id | Quote time | Quote | Title | Author | SFW (upstream)
+ *   time | timePhrase | quote | title | author | sfw (legacy/custom)
  */
 const NodeHelper = require("node_helper");
 const fs = require("fs");
 const path = require("path");
 
 module.exports = NodeHelper.create({
+  requiresVersion: "2.25.0",
+
   start() {
     this.datasets = new Map(); // absPath -> Map("HH:MM" -> [entries])
   },
 
-  resolvePath(dataFile) {
-    const file = dataFile && String(dataFile).trim() ? dataFile : "litclock_annotated.csv";
+  normalizeLocale(locale) {
+    const value = String(locale || "en-US").trim().replace("_", "-").toLowerCase();
+    const locales = {
+      de: "de-DE",
+      "de-de": "de-DE",
+      en: "en-US",
+      "en-gb": "en-GB",
+      "en-uk": "en-GB",
+      "en-us": "en-US",
+      es: "es-ES",
+      "es-es": "es-ES",
+      fr: "fr-FR",
+      "fr-fr": "fr-FR",
+      it: "it-IT",
+      "it-it": "it-IT",
+      pt: "pt-PT",
+      "pt-pt": "pt-PT",
+    };
+    return locales[value] || "en-US";
+  },
+
+  resolvePath(dataFile, locale) {
+    const file = dataFile && String(dataFile).trim()
+      ? dataFile
+      : path.join("datasets", `quotes.${this.normalizeLocale(locale)}.csv`);
     return path.isAbsolute(file) ? file : path.join(this.path, file);
   },
 
@@ -29,6 +55,7 @@ module.exports = NodeHelper.create({
     if (this.datasets.has(absPath)) return this.datasets.get(absPath);
     const raw = fs.readFileSync(absPath, "utf8");
     const map = new Map();
+    const ids = new Set();
     let rows = 0;
     for (const line of raw.split(/\r?\n/)) {
       if (!line) continue;
@@ -36,16 +63,23 @@ module.exports = NodeHelper.create({
       if (parts.length < 6) continue;
       const time = parts[0].trim();
       if (!/^\d{2}:\d{2}$/.test(time)) continue;
-      const phrase = parts[1];
+      const upstreamFormat = parts.length >= 7 && /^\d{4}-\d{3}$/.test(parts[1]);
+      const quoteId = upstreamFormat ? parts[1] : "";
+      const phrase = parts[upstreamFormat ? 2 : 1];
       // title/author/sfw are the last three fields; quote is everything
       // between, re-joined in case a stray pipe ever lands in a quote.
-      const quote = parts.slice(2, parts.length - 3).join("|");
+      const quote = parts.slice(upstreamFormat ? 3 : 2, parts.length - 3).join("|");
       const title = parts[parts.length - 3];
       const author = parts[parts.length - 2];
       let sfw = (parts[parts.length - 1] || "").trim().toLowerCase();
-      if (sfw === "nswf") sfw = "nsfw"; // fix the one typo in the source data
+      if (sfw === "nswf") sfw = "nsfw";
+      if (!["sfw", "nsfw", "unknown"].includes(sfw)) sfw = "unknown";
+      if (quoteId) {
+        if (ids.has(quoteId)) throw new Error(`duplicate quote ID: ${quoteId}`);
+        ids.add(quoteId);
+      }
       if (!map.has(time)) map.set(time, []);
-      map.get(time).push({ phrase, quote, title, author, sfw });
+      map.get(time).push({ quoteId, phrase, quote, title, author, sfw });
       rows += 1;
     }
     this.datasets.set(absPath, map);
@@ -117,7 +151,7 @@ module.exports = NodeHelper.create({
 
     let map;
     try {
-      map = this.load(this.resolvePath(cfg.dataFile));
+      map = this.load(this.resolvePath(cfg.dataFile, cfg.locale));
     } catch (err) {
       console.error(`[MMM-LiteraryClock] failed to load dataset: ${err.message}`);
       this.reply(payload, { error: err.message });
@@ -137,6 +171,7 @@ module.exports = NodeHelper.create({
       after: split.after,
       title: hit.title,
       author: hit.author,
+      quoteId: hit.quoteId,
     });
   },
 });

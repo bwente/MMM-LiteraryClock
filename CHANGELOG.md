@@ -4,16 +4,27 @@ All notable changes to this module are documented here. The format is based on
 [Keep a Changelog](https://keepachangelog.com/) and this project adheres to
 [Semantic Versioning](https://semver.org/).
 
-## [Unreleased]
+## [1.1.0] - 2026-09-14
 
 ### Added
 
+- Bundled offline German, American English, British English, Spanish, French,
+  Italian, and Portuguese quote catalogues, selectable with the `locale`
+  option.
+- German, Spanish, French, Italian, and Portuguese interface translations.
+- Automatic quote-catalogue selection from MagicMirror's global `locale` or
+  `language`, with an optional per-module override.
+- Upstream quote IDs and compatibility with the maintained seven-column source
+  format.
 - ESLint configuration, automated checks, Dependabot configuration, code of
   conduct, third-party notices, and a release checklist.
 - Explicit README sections for configuration and updates.
 
 ### Fixed
 
+- Updated the quote catalogue to cover 1438 minutes; only 10:28 and 18:44
+  currently require the digital fallback.
+- Normalized invalid source safety labels conservatively as `unknown`.
 - Restored the `LICENSE` file to canonical MIT text so automated license
   detection recognizes it correctly.
 
@@ -30,7 +41,7 @@ All notable changes to this module are documented here. The format is based on
   `showAttribution`, `allowNSFW`, `allowUnknown`, `dataFile`.
 - `dataFile` option to load alternative datasets (e.g. other languages).
 - Multi-instance support: replies are routed by module identifier.
-- Digital `HH:MM` fallback for the eight minutes without a direct quotation or
+- Digital `HH:MM` fallback for minutes without a direct quotation or
   when the selected safety filters yield no match.
 - Datasets are parsed once and cached in the node helper.
 - Basic test suite (`npm test`) covering parsing, coverage, and time-phrase

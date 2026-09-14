@@ -9,6 +9,7 @@ module.exports = defineConfig([
       ecmaVersion: "latest",
       sourceType: "script",
       globals: {
+        config: "readonly",
         Module: "readonly",
         document: "readonly",
         setTimeout: "readonly",

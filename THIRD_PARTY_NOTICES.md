@@ -8,10 +8,11 @@ and licensed under the SIL Open Font License 1.1. The full license text is in
 
 ## Literature Clock dataset
 
-`litclock_annotated.csv` was compiled by the
-[literature-clock](https://github.com/JohsEnevoldsen/literature-clock) project,
-originally from quotations crowd-sourced by The Guardian and inspired by Jaap
-Meijers' literary clock.
+The seven `datasets/quotes.*.csv` language catalogues are snapshots from
+[cdmoro/literature-clock](https://github.com/cdmoro/literature-clock), pinned to
+the revision recorded in `datasets/SOURCE.md`. That project derives from the
+literature-clock work of Johannes Enevoldsen, quotations originally
+crowd-sourced by The Guardian, and Jaap Meijers' literary clock.
 
 The literary quotations remain the property of their respective rights holders
 and are not covered by this project's MIT license.

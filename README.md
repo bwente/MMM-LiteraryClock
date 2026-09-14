@@ -11,12 +11,21 @@ time phrase emphasised — so you read the time straight off the page.
 ![screenshot](screenshot.png)
 
 At 12:00 you might get *Romeo and Juliet* ("the dial is now upon the prick of
-**noon**"); at 09:00, *Death in Venice*; at 23:58, Bill Bryson. There's a quote
-for **1432 of the 1440 minutes** in a day.
+**noon**"); at 09:00, *Death in Venice*; at 23:58, Bill Bryson. The bundled
+catalogues contain passages for **1438 of the 1440 minutes** in a day.
 
 It ships with its own serif (**Lora**, bundled locally — no Google Fonts call at
 runtime) and page-like styling, and overrides MagicMirror's default font so it
 actually reads like a book. There are **no external dependencies**.
+
+## Status and compatibility
+
+**Status:** released and actively maintained.
+
+MMM-LiteraryClock requires MagicMirror² 2.25.0 or newer. The current automated
+validation target is MagicMirror² 2.37.0 with Node.js 22.21.1. It has no
+external service requirement and is intended for ordinary MagicMirror
+installations as well as appliance-style layouts.
 
 ## Install
 
@@ -72,7 +81,8 @@ All options are optional; defaults are shown.
 | `fadeSpeed` | `1500` | Crossfade duration in ms when the quote changes. |
 | `allowNSFW` | `false` | Include quotes flagged `nsfw` in the source data. |
 | `allowUnknown` | `true` | Include quotes with an `unknown` rating. Most of the corpus is unrated, so turning this off gives sfw-only but drops coverage sharply. |
-| `dataFile` | `""` | Path to an alternative dataset (see below). Blank uses the bundled English CSV. |
+| `locale` | `""` | Optional quote-catalogue override. Blank follows MagicMirror's global `locale` or `language`. Available catalogues: `"de-DE"`, `"en-GB"`, `"en-US"`, `"es-ES"`, `"fr-FR"`, `"it-IT"`, and `"pt-PT"`. |
+| `dataFile` | `""` | Path to an alternative dataset (see below). When set, this overrides `locale`. |
 
 ## Deeper styling
 
@@ -88,30 +98,59 @@ scoped to `.MMM-LiteraryClock`, so you can override it from your mirror's
 To swap the typeface, drop new `woff2` files into `fonts/` and update the
 `@font-face` `src` URLs at the top of `MMM-LiteraryClock.css`.
 
-## Other languages / custom datasets
+## Languages and custom datasets
 
-The clock is not English-locked. Point `dataFile` at any pipe-delimited dataset
-in the same format:
+The module bundles German, American English, British English, Spanish, French,
+Italian, and Portuguese literary catalogues. By default it follows
+MagicMirror's global `locale` setting, then its `language` setting. For example,
+this main MagicMirror configuration automatically selects the German catalogue:
+
+```js
+language: "de",
+locale: "de-DE",
+```
+
+To use a different catalogue only for this module, set its `locale` override:
+
+```js
+config: { locale: "de-DE" }
+```
+
+The short forms `de`, `en`, `es`, `fr`, `it`, and `pt` are also accepted.
+`en-UK` is treated as `en-GB`, and underscores such as `de_DE` may be used in
+place of hyphens. An unavailable locale falls back to `en-US`. All catalogues
+are bundled with the module and require no network connection. Only the
+selected catalogue is loaded into memory.
+
+The separate American and British English catalogues preserve regional
+spelling and numeric-time conventions. For example, the default `en-US`
+catalogue uses `7:59` where the `en-GB` catalogue uses `7.59`.
+
+For another language or a custom catalogue, point `dataFile` at a local
+pipe-delimited dataset. The maintained upstream format is:
 
 ```
-time|timePhrase|quote|title|author|sfw
-23:58|before midnight|Humans emerge one minute...|A Short History...|Bill Bryson|sfw
+Time|Id|Quote time|Quote|Title|Author|SFW
+23:58|2358-000|before midnight|Humans emerge one minute...|A Short History...|Bill Bryson|sfw
 ```
 
-`time` is `HH:MM` (24-hour), `timePhrase` is the exact substring of the quote to
-emphasise, and `sfw` is one of `sfw` / `nsfw` / `unknown`. Relative paths resolve
+The original six-column format without a header or ID remains supported.
+`Time` is `HH:MM` (24-hour), `Quote time` must be the exact substring to
+emphasise, and `SFW` is `sfw`, `nsfw`, or `unknown`. Relative paths resolve
 against the module folder:
 
 ```js
 config: { dataFile: "datasets/litclock_de.csv" }
 ```
 
-The [literature-clock project](https://github.com/JohsEnevoldsen/literature-clock)
-and its forks maintain datasets in several languages.
+The [cdmoro/literature-clock](https://github.com/cdmoro/literature-clock)
+project maintains additional language catalogues. Downloaded custom catalogues
+remain local; the module never fetches them at runtime.
 
 ## Coverage & fallback
 
-1432 of 1440 minutes have at least one quote. For an uncovered minute, or when
+1438 of 1440 minutes have at least one quote. The currently uncovered minutes
+are 10:28 and 18:44. For an uncovered minute, or when
 the selected safety filters leave no matching quote for that minute, the module
 shows a plain digital `HH:MM` rather than displaying a quote for the wrong time.
 
@@ -128,8 +167,9 @@ dataset parsing, full-day coverage, and time-phrase highlighting.
 
 - **Module code** — MIT (see [LICENSE](LICENSE)). Third-party licensing and
   attribution details are recorded in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
-- **Quote data** (`litclock_annotated.csv`) — compiled by the
-  [literature-clock](https://github.com/JohsEnevoldsen/literature-clock) project,
+- **Quote data** (`datasets/quotes.*.csv`) —
+  maintained by the [cdmoro/literature-clock](https://github.com/cdmoro/literature-clock)
+  project and pinned to the revision recorded in [datasets/SOURCE.md](datasets/SOURCE.md),
   originally **crowd-sourced by The Guardian** and inspired by **Jaap Meijers'**
   [e-reader clock](https://www.instructables.com/id/Literary-Clock-Made-From-E-reader/).
   The quotations are short excerpts from their respective copyrighted works,

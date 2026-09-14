@@ -1,0 +1,5 @@
+{
+  "LOADING": "A carregar…",
+  "LOADING_QUOTES": "A carregar citações literárias",
+  "DATASET_ERROR": "MMM-LiteraryClock: não foi possível carregar o catálogo de citações (verifique dataFile)."
+}

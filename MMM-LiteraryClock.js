@@ -1,13 +1,15 @@
-/* global Module */
+/* global config, Module */
 
 /* MagicMirror² Module: MMM-LiteraryClock
  * A literary clock — every minute it shows a passage from a book that
  * mentions the current time, with the time phrase emphasised.
  *
- * Data: JohsEnevoldsen/literature-clock, crowd-sourced by The Guardian,
- * original idea by Jaap Meijers. Bundled as litclock_annotated.csv.
+ * Data: cdmoro/literature-clock, derived from quotations crowd-sourced by
+ * The Guardian and inspired by Jaap Meijers' literary clock.
  */
 Module.register("MMM-LiteraryClock", {
+  requiresVersion: "2.25.0",
+
   defaults: {
     fontSize: 28,          // px — size of the quote body
     maxWidth: "34em",      // measure of the text block (relative to fontSize)
@@ -20,11 +22,27 @@ Module.register("MMM-LiteraryClock", {
     showAttribution: true, // show "— Title, Author"
     allowNSFW: false,      // include quotes flagged nsfw
     allowUnknown: true,    // include quotes with an unrated (unknown) flag
-    dataFile: "",          // path to an alternative dataset (blank = bundled English CSV)
+    locale: "",            // optional catalogue override; blank follows MagicMirror
+    dataFile: "",          // optional custom dataset; overrides locale
   },
 
   getStyles() {
     return [this.file("MMM-LiteraryClock.css")];
+  },
+
+  getTranslations() {
+    return {
+      de: "translations/de.json",
+      en: "translations/en.json",
+      es: "translations/es.json",
+      fr: "translations/fr.json",
+      it: "translations/it.json",
+      pt: "translations/pt.json",
+    };
+  },
+
+  getQuoteLocale() {
+    return this.config.locale || config.locale || config.language || "en-US";
   },
 
   start() {
@@ -46,6 +64,7 @@ Module.register("MMM-LiteraryClock", {
       config: {
         allowNSFW: this.config.allowNSFW,
         allowUnknown: this.config.allowUnknown,
+        locale: this.getQuoteLocale(),
         dataFile: this.config.dataFile,
       },
     });
@@ -83,6 +102,7 @@ Module.register("MMM-LiteraryClock", {
         after: payload.after,
         title: payload.title,
         author: payload.author,
+        quoteId: payload.quoteId,
       };
     }
     this.updateDom(this.config.fadeSpeed);
@@ -115,13 +135,20 @@ Module.register("MMM-LiteraryClock", {
 
     if (!this.quote) {
       wrap.classList.add("litclock-loading");
-      wrap.innerHTML = '<span class="litclock-quote">&hellip;</span>';
+      const loading = document.createElement("span");
+      loading.className = "litclock-quote";
+      loading.textContent = this.translate("LOADING");
+      loading.setAttribute("aria-label", this.translate("LOADING_QUOTES"));
+      wrap.appendChild(loading);
       return wrap;
     }
 
     if (this.quote.error) {
       wrap.classList.add("litclock-error");
-      wrap.innerHTML = '<span class="litclock-quote">MMM-LiteraryClock: could not load the quote dataset (check <code>dataFile</code>).</span>';
+      const error = document.createElement("span");
+      error.className = "litclock-quote";
+      error.textContent = this.translate("DATASET_ERROR");
+      wrap.appendChild(error);
       return wrap;
     }
 

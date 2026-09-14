@@ -1,0 +1,5 @@
+{
+  "LOADING": "…",
+  "LOADING_QUOTES": "Loading literary clock quotation",
+  "DATASET_ERROR": "MMM-LiteraryClock could not load the quote dataset. Check the dataFile setting."
+}

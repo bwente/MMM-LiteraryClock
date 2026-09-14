@@ -1,0 +1,5 @@
+{
+  "LOADING": "Wird geladen …",
+  "LOADING_QUOTES": "Literaturzitate werden geladen",
+  "DATASET_ERROR": "MMM-LiteraryClock: Der Zitatkatalog konnte nicht geladen werden (dataFile prüfen)."
+}
