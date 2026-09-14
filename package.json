@@ -33,6 +33,6 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "eslint": "^9.39.4"
+    "eslint": "^10.10.0"
   }
 }
